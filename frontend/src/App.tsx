@@ -19,18 +19,20 @@ const App: React.FC = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
+  const apiUrl = process.env.REACT_APP_API_URL_ || "http://localhost:3001";
+
   useEffect(() => {
     fetchEmails();
   }, []);
 
   const fetchEmails = () => {
-    axios.get("/api/emails").then((res) => {
+    axios.get(`${apiUrl}/api/emails`).then((res) => {
       setEmails(res.data);
     });
   };
 
   const handleDeleteEmail = (id: number) => {
-    axios.delete(`/api/emails/${id}`).then(() => {
+    axios.delete(`${apiUrl}/api/emails/${id}`).then(() => {
       toast.success("Email msg deleted successfully");
       fetchEmails();
     });
@@ -38,11 +40,13 @@ const App: React.FC = () => {
 
   const handleUpdateEmail = () => {
     if (selectedEmail) {
-      axios.put(`/api/emails/${selectedEmail.id}`, selectedEmail).then(() => {
-        toast.success("Email msg updated successfully");
-        fetchEmails();
-        setModalIsOpen(false);
-      });
+      axios
+        .put(`${apiUrl}/api/emails/${selectedEmail.id}`, selectedEmail)
+        .then(() => {
+          toast.success("Email msg updated successfully");
+          fetchEmails();
+          setModalIsOpen(false);
+        });
     }
   };
 
