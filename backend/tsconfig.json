@@ -6,7 +6,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@exceptions/*": ["./src/exceptions/*"]
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/node_modules"]

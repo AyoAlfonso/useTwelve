@@ -1,5 +1,5 @@
 const Imap = require("imap");
-import { simpleParser } from "mailparser";
+import { ParsedMail, simpleParser } from "mailparser";
 import { storeEmail } from "./storeEmail";
 
 const imap = new Imap({
@@ -22,24 +22,39 @@ imap.once("ready", () => {
       if (err) throw err;
 
       const f = imap.fetch(results, { bodies: "" });
-      f.on("message", (msg: { on: (arg0: string, arg1: (stream: any, info: any) => void) => void; }, seqno: any) => {
-        msg.on("body", (stream: any, info: any) => {
-          simpleParser(stream, (err: any, parsed: { text: { match: (arg0: RegExp) => any[]; }; }) => {
-            if (err) throw err;
 
-            const name = parsed.text.match(/Name: (.*)/)?.[1];
-            const amount = parsed.text.match(/Amount: \$(.*)/)?.[1];
-            const comments = parsed.text.match(/Comment: (.*)/)?.[1];
+      console.log(f, "follow");
+      f.on(
+        "message",
+        (
+          msg: {
+            on: (arg0: string, arg1: (stream: any, info: any) => void) => void;
+          },
+          seqno: any
+        ) => {
+          msg.on("body", (stream: any, info: any) => {
+            simpleParser(stream, (err: any, parsed: ParsedMail) => {
+              if (err) throw err;
 
-            // Store the extracted data in the database
-            if (name && amount && comments) {
-              storeEmail(name, parseFloat(amount), comments)
-                .then(() => console.log("Email stored successfully"))
-                .catch((error) => console.error("Error storing email", error));
-            }
+              const email = parsed.headers?.get("from")?.toString();
+              console.log(email);
+              const name = parsed.text?.match(/Name: (.*)/)?.[1];
+              const amount = parsed.text?.match(/Amount: \$(.*)/)?.[1];
+              const comments = parsed.text?.match(/Comment: (.*)/)?.[1];
+
+              // Store the extracted data in the database
+              if (email && name && amount && comments) {
+                const amountNumber = parseFloat(amount);
+                storeEmail({ email, name, amount: amountNumber, comments })
+                  .then(() => console.log("Email stored successfully"))
+                  .catch((error) =>
+                    console.error("Error storing email", error)
+                  );
+              }
+            });
           });
-        });
-      });
+        }
+      );
       f.once("end", () => {
         console.log("Done fetching all messages!");
         imap.end();

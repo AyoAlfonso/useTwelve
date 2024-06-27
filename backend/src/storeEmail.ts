@@ -1,9 +1,7 @@
-import { Email } from "./models/Emails"; // Assuming you have defined your models
+import * as Email from "./models/Emails"; // Assuming you have defined your models
+import DB from "./models";
+import { CreateEmailDTO } from "./dto";
 
-export const storeEmail = async (
-  name: string,
-  amount: number,
-  comments: string
-) => {
-  await Email.create({ name, amount, comments });
+export const storeEmail = async (data: CreateEmailDTO) => {
+  await DB.Emails.create(data);
 };

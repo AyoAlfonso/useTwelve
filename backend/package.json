@@ -3,14 +3,26 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "seed": "ts-node src/seed.ts"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "sequelize": "^6.17.0",
+    "mailparser": "^3.7.1",
+    "node-config-ts": "^3.3.1",
+    "reflect-metadata": "^0.2.2",
+    "sequelize": "6.37.1",
+    "sequelize-typescript": "^2.1.6",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
-    "@types/sequelize": "^4.28.20"
+    "@types/mailparser": "^3.4.4",
+    "@types/node": "^20.14.9",
+    "@types/sequelize": "^4.28.20",
+    "@types/validator": "^13.12.0",
+    "sequelize-cli": "^6.2.0"
   }
 }
