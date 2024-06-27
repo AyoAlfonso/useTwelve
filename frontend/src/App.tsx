@@ -102,10 +102,12 @@ const App: React.FC = () => {
                 <td>{email.amount}</td>
                 <td>{email.comments}</td>
                 <td>
-                  <button onClick={() => openModal(email)}>Edit</button>
-                  <button onClick={() => handleDeleteEmail(email.id)}>
-                    Delete
-                  </button>
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    <button onClick={() => openModal(email)}>Edit</button>
+                    <button onClick={() => handleDeleteEmail(email.id)}>
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))
@@ -147,6 +149,17 @@ const App: React.FC = () => {
         )}
       </Modal>
       <ToastContainer />
+      <div>
+        <h2>
+          Example of an email to send to alfonsoayo7@gmail.com
+          <br /> Put the content below in the body of the message
+        </h2>
+      </div>
+      <div>
+        name: John Doe <br />
+        Amount: 363.45 <br />
+        Comment: This is a test comment <br />
+      </div>
     </div>
   );
 };
