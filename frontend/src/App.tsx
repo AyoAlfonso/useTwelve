@@ -155,7 +155,7 @@ const App: React.FC = () => {
       <ToastContainer />
       <div>
         <h2>
-          Example of an email to send to alfonsoayo7@gmail.com
+          To test the app send an email to send to alfonsoayo7@gmail.com
           <br /> Put the content below in the body of the message
         </h2>
       </div>
