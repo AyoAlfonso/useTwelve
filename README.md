@@ -38,7 +38,7 @@ For the .env file you need
 EMAIL_PASSWORD="your email password"
 EMAIL="your email"
 NODE_TLS_REJECT_UNAUTHORIZED=0
-SEARCH_WITHIN_PERIOD= 60 # 60 secs which is 1 HOUR 
+SEARCH_WITHIN_PERIOD= 60 #60  which reps 1 HOUR 
 REACT_APP_API_URL_="https://usetwelve.onrender.com"
 ```
 ## License
