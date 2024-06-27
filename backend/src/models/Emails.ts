@@ -11,6 +11,7 @@ export interface IEmail {
   [x: string]: any;
   id?: string;
   email: string;
+  messageId: string;
   name?: string;
   amount?: number;
   comments?: string;
@@ -30,6 +31,7 @@ export class EmailModel
 {
   public id!: string;
   public email!: string;
+  public messageId!: string;
   public name!: string;
   public amount!: number;
   public comments!: string;
@@ -51,6 +53,11 @@ export default function (sequelize: Sequelize): typeof EmailModel {
         email: {
           type: DataTypes.STRING,
           allowNull: false,
+        },
+        messageId: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          unique: true,
         },
         name: {
           type: DataTypes.STRING,

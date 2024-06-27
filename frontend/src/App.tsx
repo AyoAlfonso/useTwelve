@@ -22,20 +22,21 @@ const App: React.FC = () => {
 
   const fetchEmails = () => {
     axios.get("/api/emails").then((res) => {
+      console.log(res.data, "res.data");
       setEmails(res.data);
     });
   };
 
   const handleDeleteEmail = (id: number) => {
     axios.delete(`/api/emails/${id}`).then(() => {
-      toast.success("Email deleted successfully");
+      toast.success("Email msg deleted successfully");
       fetchEmails();
     });
   };
   const handleUpdateEmail = () => {
     if (selectedEmail) {
       axios.put(`/api/emails/${selectedEmail.id}`, selectedEmail).then(() => {
-        toast.success("Email updated successfully");
+        toast.success("Email msg updated successfully");
         fetchEmails();
         setModalIsOpen(false);
       });
@@ -64,6 +65,9 @@ const App: React.FC = () => {
     });
   };
 
+  if (emails.length === 0) {
+    return <div>No Emails Found</div>;
+  }
   return (
     <div>
       <h1>Email Data</h1>
@@ -76,21 +80,29 @@ const App: React.FC = () => {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {emails.map((email) => (
-            <tr key={email.id}>
-              <td>{email.name}</td>
-              <td>{email.amount}</td>
-              <td>{email.comments}</td>
-              <td>
-                <button onClick={() => openModal(email)}>Edit</button>
-                <button onClick={() => handleDeleteEmail(email.id)}>
-                  Delete
-                </button>
-              </td>
+        {(emails.length > 0 && (
+          <tbody>
+            {emails.map((email) => (
+              <tr key={email.id}>
+                <td>{email.name}</td>
+                <td>{email.amount}</td>
+                <td>{email.comments}</td>
+                <td>
+                  <button onClick={() => openModal(email)}>Edit</button>
+                  <button onClick={() => handleDeleteEmail(email.id)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        )) || (
+          <tbody>
+            <tr>
+              <td colSpan={4}>No Emails Found</td>
             </tr>
-          ))}
-        </tbody>
+          </tbody>
+        )}
       </table>
       <Modal
         isOpen={modalIsOpen}

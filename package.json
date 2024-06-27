@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start:backend": "ts-node --project tsconfig.backend.json backend/src/server.ts",
+    "start:backend": "cd backend && npm run dev",
     "start:frontend": "cd frontend && npm start",
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "build": "npm run build:backend && npm run build:frontend",
