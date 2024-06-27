@@ -4,11 +4,11 @@
 
 To setup the project, install the required dependencies:
 
-1. Install yarn globally with `npm install -g yarn`
+1. Install ts-node-dev globally with `npm install -g ts-node-dev`
 
-2. `yarn install` in both the `backend` and `frontend` folders
+2. Install yarn globally with `npm install -g yarn`
 
-3. Run the backend and the frontend as shown below
+3. `yarn install` in both the `backend` and `frontend` folders
 
 ---
 

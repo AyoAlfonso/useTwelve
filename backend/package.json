@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --max-old-space-size=4096  --respawn src/index.ts",
-    "seed": "ts-node src/seed.ts"
+    "seed": "ts-node src/seed.ts",
+    "build": "tsc",
+    "serve": "node dist/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
