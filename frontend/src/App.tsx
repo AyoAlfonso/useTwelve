@@ -11,10 +11,13 @@ type Email = {
   comments: string;
 };
 
+type SortOrder = "asc" | "desc";
+
 const App: React.FC = () => {
   const [emails, setEmails] = useState<Email[]>([]);
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
   useEffect(() => {
     fetchEmails();
@@ -22,7 +25,6 @@ const App: React.FC = () => {
 
   const fetchEmails = () => {
     axios.get("/api/emails").then((res) => {
-      console.log(res.data, "res.data");
       setEmails(res.data);
     });
   };
@@ -33,6 +35,7 @@ const App: React.FC = () => {
       fetchEmails();
     });
   };
+
   const handleUpdateEmail = () => {
     if (selectedEmail) {
       axios.put(`/api/emails/${selectedEmail.id}`, selectedEmail).then(() => {
@@ -47,6 +50,7 @@ const App: React.FC = () => {
     setSelectedEmail(email);
     setModalIsOpen(true);
   };
+
   const closeModal = () => {
     setModalIsOpen(false);
     setSelectedEmail(null);
@@ -65,9 +69,17 @@ const App: React.FC = () => {
     });
   };
 
-  if (emails.length === 0) {
-    return <div>No Emails Found</div>;
-  }
+  const handleSortByAmount = () => {
+    const newOrder: SortOrder = sortOrder === "asc" ? "desc" : "asc";
+    setSortOrder(newOrder);
+    const sortedEmails = [...emails].sort((a, b) => {
+      if (a.amount < b.amount) return newOrder === "asc" ? -1 : 1;
+      if (a.amount > b.amount) return newOrder === "asc" ? 1 : -1;
+      return 0;
+    });
+    setEmails(sortedEmails);
+  };
+
   return (
     <div>
       <h1>Email Data</h1>
@@ -75,14 +87,16 @@ const App: React.FC = () => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Amount</th>
+            <th onClick={handleSortByAmount} style={{ cursor: "pointer" }}>
+              Amount {sortOrder === "asc" ? "↑" : "↓"}
+            </th>
             <th>Comments</th>
             <th>Actions</th>
           </tr>
         </thead>
-        {(emails.length > 0 && (
-          <tbody>
-            {emails.map((email) => (
+        <tbody>
+          {emails.length > 0 ? (
+            emails.map((email) => (
               <tr key={email.id}>
                 <td>{email.name}</td>
                 <td>{email.amount}</td>
@@ -94,15 +108,13 @@ const App: React.FC = () => {
                   </button>
                 </td>
               </tr>
-            ))}
-          </tbody>
-        )) || (
-          <tbody>
+            ))
+          ) : (
             <tr>
               <td colSpan={4}>No Emails Found</td>
             </tr>
-          </tbody>
-        )}
+          )}
+        </tbody>
       </table>
       <Modal
         isOpen={modalIsOpen}
